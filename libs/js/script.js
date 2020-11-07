@@ -13,33 +13,39 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     id: 'mapbox/streets-v11',
     tileSize: 512,
     zoomOffset: -1,
+    // noWrap: true,
     accessToken: 'pk.eyJ1Ijoia2l6aXQwIiwiYSI6ImNraDA1ZTFxYzFhZGwydXJyejRraHM5MDkifQ.XFPjZp0EvFSM0P69qnxgmg'
 }).addTo(mymap);
 
+console.log(geojson.then(response=> response.features));
 
-geojson.then(response =>{
-    response.features.forEach(feature=>{
-        if(feature.properties.name === "Canada"){
-            const geojsonFeature = {
-                "type": "Feature", 
-                "properties": {
-                    "name": feature.properties.name,
-                    "iso_a2":feature.properties.iso_a2,
-                    "iso_a3":feature.properties.iso_a3,
-                    "iso_n3": feature.properties.iso_n3
-                },
-                "geometry": {
-                    "type": feature.geometry.type, 
-                    "coordinates": feature.geometry.coordinates
-                }
+// When a country is selected
+// $('#btn1').on('click', ()=>{
+//     geojson.then(response =>{
+//         response.features.forEach(feature=>{
+//             if(feature.properties.name === $('#country').val()){
+//                     var geojsonFeature = {
+//                     "type": "Feature", 
+//                     "properties": {
+//                         "name": feature.properties.name,
+//                         "iso_a2":feature.properties.iso_a2,
+//                         "iso_a3":feature.properties.iso_a3,
+//                         "iso_n3": feature.properties.iso_n3
+//                     },
+//                     "geometry": {
+//                         "type": feature.geometry.type, 
+//                         "coordinates": feature.geometry.coordinates
+//                     }
+    
+//                 }
+    
+//                 L.geoJSON(geojsonFeature).addTo(mymap);
+//             }
+            
+//         })
+//     })
+// })
 
-            }
-
-            L.geoJSON(geojsonFeature).addTo(mymap);
-        }
-        
-    })
-})
 
 // var marker = L.marker([23.75975, -77.53466]).addTo(mymap);
 

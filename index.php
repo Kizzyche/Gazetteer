@@ -40,8 +40,8 @@
 
     </div>
 
-    <script src="libs/vendor/bootstrap/bootstrap.min.js"></script>
     <script src="libs/vendor/jquery/jquery-2.2.3.min.js"></script>
+    <script src="libs/vendor/bootstrap/bootstrap.min.js"></script>
     <script src="libs/js/script.js"></script>
     <script>
         $(window).on('load', ()=>{
