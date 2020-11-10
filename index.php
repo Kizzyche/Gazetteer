@@ -18,11 +18,11 @@
         <label for="">Country: </label>
         <select name="country" id="country">
             <?php
+                
                 $data = file_get_contents("countryBordersGeo.json");
                 $data = json_decode($data, true);
                 $output = $data['features'];
                 asort($output);
-
                 foreach($output as $row){
                     echo "<option value='".$row['properties']['name']."'>".$row['properties']['name']."</option>";
                     

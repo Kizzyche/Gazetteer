@@ -1,50 +1,61 @@
+// Create map variable
+var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 
-var geojson = fetch('libs/extras/countryBordersGeo.json').then(response => response.json()).then(jsonResponse=> jsonResponse)
-
-
-
-
-var mymap = L.map('mapid').setView([
-    23.75975, -77.53466], 8);
-
+// Add a tile layer
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: 'mapbox/streets-v11',
     tileSize: 512,
     zoomOffset: -1,
-    // noWrap: true,
     accessToken: 'pk.eyJ1Ijoia2l6aXQwIiwiYSI6ImNraDA1ZTFxYzFhZGwydXJyejRraHM5MDkifQ.XFPjZp0EvFSM0P69qnxgmg'
 }).addTo(mymap);
 
-console.log(geojson.then(response=> response.features));
+// makes calls to get data from geojson file async
+const getData = callback =>{
+    $.ajax({
+        method: 'GET', 
+        url: "libs/php/readjson.php", 
+        success: callback
+    })
+}
 
-// When a country is selected
-// $('#btn1').on('click', ()=>{
-//     geojson.then(response =>{
-//         response.features.forEach(feature=>{
-//             if(feature.properties.name === $('#country').val()){
-//                     var geojsonFeature = {
-//                     "type": "Feature", 
-//                     "properties": {
-//                         "name": feature.properties.name,
-//                         "iso_a2":feature.properties.iso_a2,
-//                         "iso_a3":feature.properties.iso_a3,
-//                         "iso_n3": feature.properties.iso_n3
-//                     },
-//                     "geometry": {
-//                         "type": feature.geometry.type, 
-//                         "coordinates": feature.geometry.coordinates
-//                     }
+var geojson = {}
+$('#btn1').on('click', ()=>{
+
+    var result = getData(response => {
+        var res = JSON.parse(response);
+        if(Object.keys(geojson).length !== 0){
+           
+        }
+        // console.log(res);
+
+        res.features.forEach(feature => {
+            if(feature.properties.name === $('#country').val()){
+                geojson = {
+                    "type": "Feature", 
+                    "properties": {
+                        "name": feature.properties.name,
+                        "iso_a2":feature.properties.iso_a2,
+                        "iso_a3":feature.properties.iso_a3,
+                        "iso_n3": feature.properties.iso_n3
+                    },
+                    "geometry": {
+                        "type": feature.geometry.type, 
+                        "coordinates": feature.geometry.coordinates
+                    }
+                }
+                console.log(geojson)
+                const layer = L.geoJSON(geojson).addTo(mymap);
+                console.log(layer);
+                L.geoJSON(geojson).removeFrom(mymap);
+            }
+        });
+
+    })
     
-//                 }
-    
-//                 L.geoJSON(geojsonFeature).addTo(mymap);
-//             }
-            
-//         })
-//     })
-// })
+})
+
 
 
 // var marker = L.marker([23.75975, -77.53466]).addTo(mymap);
